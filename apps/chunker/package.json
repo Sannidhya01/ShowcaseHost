@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "code-chunk": "0.1.14",
-    "linguist-languages": "9.4.0",
+    "linguist-languages": "9.5.0",
     "tree-sitter-wasm": "1.1.6",
     "web-tree-sitter": "0.26.3"
   },
