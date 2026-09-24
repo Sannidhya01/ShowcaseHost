@@ -1,0 +1,26 @@
+{
+  "name": "showcasehost",
+  "private": true,
+  "version": "0.1.0",
+  "description": "AI-powered codebase intelligence platform foundation.",
+  "packageManager": "pnpm@10.13.1",
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=10.0.0"
+  },
+  "scripts": {
+    "dev": "pnpm --parallel --filter @showcasehost/web dev",
+    "web": "pnpm --filter @showcasehost/web dev",
+    "build": "pnpm -r build",
+    "lint": "pnpm -r lint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "contracts:generate": "node scripts/generate-contracts.mjs",
+    "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm format:check"
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "name": "@showcasehost/contracts",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "lint": "echo \"No contract lint yet\"",
+    "typecheck": "tsc --noEmit",
+    "test": "echo \"No contract tests yet\""
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.14",
+    "typescript": "^5.8.3"
+  }
+}
