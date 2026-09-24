@@ -116,8 +116,9 @@ async def test_batched_collection_matches_retriever_and_resumes_from_cache(
     ]
     monkeypatch.setattr(tune_codequeries, "ROOT", tmp_path)
     monkeypatch.setattr(tune_codequeries, "HuggingFaceEmbeddingProvider", Provider)
+    monkeypatch.setenv("HF_API_TOKEN", "test-token")
     (tmp_path / "validation-42.json").write_text(json.dumps({"rows": rows, "sampling": {}}))
-    settings = Settings(app_env="test", hf_api_token="test-token")
+    settings = Settings(app_env="test")
     args = argparse.Namespace(split="validation", seed=42, count=2)
     await tune_codequeries.collect(args, settings)
     result = cast(dict[str, Any], json.loads((tmp_path / "validation-42-scores.json").read_text()))
