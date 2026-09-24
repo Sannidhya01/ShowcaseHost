@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.13.1
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @showcasehost/web lint
+      - run: pnpm --filter @showcasehost/web typecheck
+      - run: pnpm --filter @showcasehost/web test
+
+  backend:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: showcasehost_test
+          POSTGRES_USER: showcasehost
+          POSTGRES_PASSWORD: showcasehost
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U showcasehost -d showcasehost_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      TEST_DATABASE_URL: postgresql+asyncpg://showcasehost:showcasehost@localhost:5432/showcasehost_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version-file: .python-version
+      - working-directory: apps/api
+        run: uv sync --all-extras --dev
+      - working-directory: apps/api
+        run: uv run ruff check .
+      - working-directory: apps/api
+        run: uv run mypy app
+      - working-directory: apps/api
+        run: uv run pytest
